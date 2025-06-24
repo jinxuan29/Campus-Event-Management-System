@@ -1,0 +1,7 @@
+Campus-Event-Management-System/.vscode
+*.class
+Campus-Event-Management-System/nbproject/
+build.xml
+manifest.mf
+Campus-Event-Management-System/README.md
+/Campus-Event-Management-System/build/
