@@ -1,25 +1,41 @@
 package view;
 
+import java.awt.*;
 import javax.swing.*;
-import model.PageModel;
-import view.builder.PageDirector;
-import view.builder.implementation.HomePageBuilder;
-import view.builder.interfaces.PageBuilder;
+import shared.Navigation;
 
-public class HomePageView {
-
-    private JPanel panel;
-
+public class HomePageView extends PageView {
     public HomePageView() {
-        // use the homepagebuilder to build customize home page
-        PageBuilder builder = new HomePageBuilder();
-        PageDirector director = new PageDirector(builder);
-        PageModel model = director.constructPage("Campus Event Management System");
-
-        this.panel = model.getMainPanel();
+        super("Campus Event Management System"); // set up the title
     }
 
-    public JPanel getPanel() {
+    @Override
+    protected JPanel createContentPanel() {
+        JPanel panel = new JPanel(new GridLayout(2, 2, 20, 20));
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        panel.setOpaque(false);
+
+        // Add custom buttons
+        String[] categories = { "EVENTS", "REGISTRATIONS", "REPORTS", "SETTINGS" };
+        Color[] colors = {
+                new Color(76, 175, 80),
+                new Color(33, 150, 243),
+                new Color(255, 152, 0),
+                new Color(156, 39, 176)
+        };
+
+        for (int i = 0; i < categories.length; i++) {
+            String category = categories[i];
+            JButton btn = new JButton(category);
+            btn.setBackground(colors[i]);
+            btn.setForeground(Color.WHITE);
+            btn.addActionListener(e -> {
+                Navigation.navigateTo(category);
+            });
+            panel.add(btn);
+        }
+
         return panel;
     }
+
 }

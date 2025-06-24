@@ -25,8 +25,8 @@ public class CampusEventManagementSystemFrame extends JFrame {
 
     private void initializeUI() {
         // Add all pages to the card panel
-        registerPage("HOME", new HomePageView().getPanel());
-        registerPage("EVENTS", new EventPageView().getPanel());
+        registerPage("HOME", new HomePageView().getMainPanel());
+        registerPage("EVENTS", new EventPageView().getMainPanel());
     }
 
     public void registerPage(String name, JPanel panel) {

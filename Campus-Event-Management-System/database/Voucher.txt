@@ -1,0 +1,2 @@
+// all vouchers / Promotions are stored here
+voucher_id, event_id,voucher_type, discount_amount, quantity_left, date_created, date_expired

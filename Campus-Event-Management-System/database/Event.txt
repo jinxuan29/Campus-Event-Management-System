@@ -1,0 +1,2 @@
+//  all Events are stored here
+event_id, name, type, venue, date, capacity, base_fee

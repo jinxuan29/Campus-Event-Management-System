@@ -1,0 +1,1 @@
+registration_id, user_id, event_id, registration_date, status, user_role
