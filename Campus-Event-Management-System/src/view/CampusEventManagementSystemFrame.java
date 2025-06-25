@@ -1,9 +1,11 @@
 package view;
 
+import controller.EventPageController;
 import java.awt.CardLayout;
 import java.awt.Component;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import model.EventManager;
 
 public class CampusEventManagementSystemFrame extends JFrame {
     private JPanel cardPanel;
@@ -24,9 +26,18 @@ public class CampusEventManagementSystemFrame extends JFrame {
     }
 
     private void initializeUI() {
-        // Add all pages to the card panel
-        registerPage("HOME", new HomePageView().getMainPanel());
-        registerPage("EVENTS", new EventPageView().getMainPanel());
+        // Read Database
+        EventManager eventManager = new EventManager("Campus-Event-Management-System/database/Event.txt");
+
+        // HOME page
+        HomePageView homePageView = new HomePageView();
+        registerPage("HOME", homePageView.getMainPanel());
+
+        // EVENTS page
+        EventPageView eventPageView = new EventPageView();
+        EventPageController eventController = new EventPageController(eventManager, eventPageView);
+        eventController.loadAndDisplayEvents();
+        registerPage("EVENTS", eventPageView.getMainPanel());
     }
 
     public void registerPage(String name, JPanel panel) {

@@ -24,7 +24,7 @@ public abstract class PageView extends JPanel {
         mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Initialize panels (but don't populate them)
+        // Initialize panels
         headerPanel = createHeaderPanel();
         contentPanel = createContentPanel(); // had to be setup by subclass manually since each page is different
         footerPanel = createFooterPanel();

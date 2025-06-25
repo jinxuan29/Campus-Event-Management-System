@@ -1,2 +1,10 @@
-//  all Events are stored here
-event_id, name, type, venue, date, capacity, base_fee
+E001,AI Innovations 2025,Auditorium A,Seminar,2025-07-10,150,20
+E002,Java Coding Bootcamp,Lab B,Workshop,2025-08-05,40,0
+E003,Cultural Fiesta,Main Hall,Cultural,2025-09-01,300,5
+E004,Interfaculty Football Match,Sports Field,Sports,2025-08-15,22,0
+E005,Cybersecurity Conference,Room 305,Seminar,2025-07-22,100,15
+E006,Python for Beginners,Lab A,Workshop,2025-08-12,30,0
+E007,Multicultural Night,Outdoor Stage,Cultural,2025-09-20,500,8
+E008,Basketball Finals,Court 1,Sports,2025-07-28,20,0
+E009,Cloud Computing Trends,Room 101,Seminar,2025-08-10,120,10
+E010,UI/UX Design Workshop,Design Studio,Workshop,2025-09-05,25,5

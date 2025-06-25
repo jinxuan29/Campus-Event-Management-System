@@ -4,14 +4,16 @@ package model;
 import java.util.Date;
 
 public class Event {
-    private final String eventName;
-    private final Date eventDate;
-    private final String eventVenue;
-    private final String eventType;
-    private final int eventCapacity;
-    private final int registrationFee;
+    private String eventId;
+    private String eventName;
+    private Date eventDate;
+    private String eventVenue;
+    private String eventType;
+    private int eventCapacity;
+    private int registrationFee;
 
     protected Event(EventBuilder builder) {
+        this.eventId = builder.eventId;
         this.eventName = builder.eventName;
         this.eventDate = builder.eventDate;
         this.eventVenue = builder.eventVenue;
@@ -20,13 +22,76 @@ public class Event {
         this.registrationFee = builder.registrationFee;
     }
 
+    // Getters and Setters
+    public String getEventId() {
+        return eventId;
+    }
+
+    public String getEventName() {
+        return eventName;
+    }
+
+    public Date getEventDate() {
+        return eventDate;
+    }
+
+    public String getEventVenue() {
+        return eventVenue;
+    }
+
+    public String getEventType() {
+        return eventType;
+    }
+
+    public int getEventCapacity() {
+        return eventCapacity;
+    }
+
+    public int getRegistrationFee() {
+        return registrationFee;
+    }
+
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
+    }
+
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
+    }
+
+    public void setEventDate(Date eventDate) {
+        this.eventDate = eventDate;
+    }
+
+    public void setEventVenue(String eventVenue) {
+        this.eventVenue = eventVenue;
+    }
+
+    public void setEventType(String eventType) {
+        this.eventType = eventType;
+    }
+
+    public void setEventCapacity(int eventCapacity) {
+        this.eventCapacity = eventCapacity;
+    }
+
+    public void setRegistrationFee(int registrationFee) {
+        this.registrationFee = registrationFee;
+    }
+
     public static class EventBuilder {
+        protected String eventId;
         protected String eventName;
         protected Date eventDate;
         protected String eventVenue;
         protected String eventType;
         protected int eventCapacity;
         protected int registrationFee;
+
+        public EventBuilder eventId(String eventId) {
+            this.eventId = eventId;
+            return this;
+        }
 
         public EventBuilder eventName(String name) {
             this.eventName = name;
