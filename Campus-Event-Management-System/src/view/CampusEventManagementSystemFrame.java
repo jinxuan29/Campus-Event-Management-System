@@ -36,7 +36,6 @@ public class CampusEventManagementSystemFrame extends JFrame {
         // EVENTS page
         EventPageView eventPageView = new EventPageView();
         EventPageController eventController = new EventPageController(eventManager, eventPageView);
-        eventController.loadAndDisplayEvents();
         registerPage("EVENTS", eventPageView.getMainPanel());
     }
 

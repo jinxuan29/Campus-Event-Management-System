@@ -28,7 +28,7 @@ public class EventPageView extends PageView implements EventObserver {
         JPanel contentPanel = new JPanel(new BorderLayout(10, 10));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        String[] columns = { "Name", "Date", "Venue", "Type", "Capacity", "Fee" };
+        String[] columns = { "ID", "Name", "Date", "Venue", "Type", "Capacity", "Fee" };
         tableModel = new DefaultTableModel(columns, 0);
         eventTable = new JTable(tableModel);
 
@@ -70,6 +70,7 @@ public class EventPageView extends PageView implements EventObserver {
         tableModel.setRowCount(0); // Clear table
         for (Event e : events) {
             tableModel.addRow(new Object[] {
+                    e.getEventId(),
                     e.getEventName(),
                     new SimpleDateFormat("yyyy-MM-dd").format(e.getEventDate()),
                     e.getEventVenue(),
@@ -92,16 +93,18 @@ public class EventPageView extends PageView implements EventObserver {
             return null;
 
         try {
-            String name = tableModel.getValueAt(row, 0).toString();
-            String date = tableModel.getValueAt(row, 1).toString();
-            String venue = tableModel.getValueAt(row, 2).toString();
-            String type = tableModel.getValueAt(row, 3).toString();
-            int capacity = (int) tableModel.getValueAt(row, 4);
+            String id = tableModel.getValueAt(row, 0).toString();
+            String name = tableModel.getValueAt(row, 1).toString();
+            String date = tableModel.getValueAt(row, 2).toString();
+            String venue = tableModel.getValueAt(row, 3).toString();
+            String type = tableModel.getValueAt(row, 4).toString();
+            int capacity = (int) tableModel.getValueAt(row, 5);
 
-            String feeStr = tableModel.getValueAt(row, 5).toString().trim();
+            String feeStr = tableModel.getValueAt(row, 6).toString().trim();
             int fee = feeStr.equalsIgnoreCase("Free") ? 0 : Integer.parseInt(feeStr.replaceAll("[^\\d]", ""));
 
             return new Event.EventBuilder()
+                    .eventId(id)
                     .eventName(name)
                     .eventDate(new SimpleDateFormat("yyyy-MM-dd").parse(date))
                     .eventVenue(venue)

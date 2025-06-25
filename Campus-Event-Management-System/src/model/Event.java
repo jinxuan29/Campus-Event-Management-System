@@ -88,6 +88,19 @@ public class Event {
         protected int eventCapacity;
         protected int registrationFee;
 
+        public EventBuilder(Event event) {
+            this.eventId = event.getEventId();
+            this.eventName = event.getEventName();
+            this.eventDate = event.getEventDate();
+            this.eventVenue = event.getEventVenue();
+            this.eventType = event.getEventType();
+            this.eventCapacity = event.getEventCapacity();
+            this.registrationFee = event.getRegistrationFee();
+        }
+
+        public EventBuilder() {
+        }
+
         public EventBuilder eventId(String eventId) {
             this.eventId = eventId;
             return this;

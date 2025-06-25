@@ -1,22 +1,18 @@
 package view;
 
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 import model.Event;
 
 public class EventDialog extends JDialog {
     private JTextField nameField;
-    private JTextField dateField;
+    private JTextField yearField;
+    private JTextField monthField;
+    private JTextField dayField;
     private JTextField venueField;
     private JComboBox<String> typeCombo;
     private JTextField capacityField;
@@ -27,23 +23,35 @@ public class EventDialog extends JDialog {
         setTitle(title);
         setModal(true);
         setLayout(new BorderLayout());
-        setSize(400, 300);
+        setSize(400, 350);
         setLocationRelativeTo(null);
 
-        // Form panel
-        JPanel formPanel = new JPanel(new GridLayout(6, 2, 5, 5));
+        JPanel formPanel = new JPanel(new GridLayout(7, 2, 5, 5));
 
         nameField = new JTextField();
-        dateField = new JTextField();
+
+        yearField = new JTextField();
+        yearField.setColumns(4);
+        monthField = new JTextField();
+        monthField.setColumns(2);
+        dayField = new JTextField();
+        dayField.setColumns(2);
+
         venueField = new JTextField();
         typeCombo = new JComboBox<>(new String[] { "seminar", "workshop", "cultural", "sports" });
         capacityField = new JTextField();
         feeField = new JTextField();
 
-        // If editing existing event, populate fields
         if (existingEvent != null) {
             nameField.setText(existingEvent.getEventName());
-            dateField.setText(new SimpleDateFormat("yyyy-MM-dd").format(existingEvent.getEventDate()));
+            Date d = existingEvent.getEventDate();
+            SimpleDateFormat sdfYear = new SimpleDateFormat("yyyy");
+            SimpleDateFormat sdfMonth = new SimpleDateFormat("MM");
+            SimpleDateFormat sdfDay = new SimpleDateFormat("dd");
+            yearField.setText(sdfYear.format(d));
+            monthField.setText(sdfMonth.format(d));
+            dayField.setText(sdfDay.format(d));
+
             venueField.setText(existingEvent.getEventVenue());
             typeCombo.setSelectedItem(existingEvent.getEventType());
             capacityField.setText(String.valueOf(existingEvent.getEventCapacity()));
@@ -52,22 +60,31 @@ public class EventDialog extends JDialog {
 
         formPanel.add(new JLabel("Event Name:"));
         formPanel.add(nameField);
-        formPanel.add(new JLabel("Date (yyyy-MM-dd):"));
-        formPanel.add(dateField);
+
+        formPanel.add(new JLabel("Date (YYYY - MM - DD):"));
+        JPanel datePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 0));
+        datePanel.add(yearField);
+        datePanel.add(new JLabel(" - "));
+        datePanel.add(monthField);
+        datePanel.add(new JLabel(" - "));
+        datePanel.add(dayField);
+        formPanel.add(datePanel);
+
         formPanel.add(new JLabel("Venue:"));
         formPanel.add(venueField);
+
         formPanel.add(new JLabel("Type:"));
         formPanel.add(typeCombo);
+
         formPanel.add(new JLabel("Capacity:"));
         formPanel.add(capacityField);
+
         formPanel.add(new JLabel("Fee:"));
         formPanel.add(feeField);
 
-        // Button panel
         JPanel buttonPanel = new JPanel();
         confirmButton = new JButton("Confirm");
         JButton cancelButton = new JButton("Cancel");
-
         cancelButton.addActionListener(e -> dispose());
 
         buttonPanel.add(cancelButton);
@@ -82,12 +99,53 @@ public class EventDialog extends JDialog {
     }
 
     public Event getEventFromFields() throws ParseException, NumberFormatException {
+        if (nameField.getText().trim().isEmpty() ||
+                yearField.getText().trim().isEmpty() ||
+                monthField.getText().trim().isEmpty() ||
+                dayField.getText().trim().isEmpty() ||
+                venueField.getText().trim().isEmpty() ||
+                capacityField.getText().trim().isEmpty()) {
+            throw new IllegalArgumentException("All fields must be filled");
+        }
+
         String name = nameField.getText().trim();
-        Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateField.getText().trim());
+        String yearStr = yearField.getText().trim();
+        String monthStr = monthField.getText().trim();
+        String dayStr = dayField.getText().trim();
+
+        int year = Integer.parseInt(yearStr);
+        int month = Integer.parseInt(monthStr);
+        int day = Integer.parseInt(dayStr);
+
+        // Basic validation of month and day ranges
+        if (month < 1 || month > 12) {
+            throw new IllegalArgumentException("Month must be between 1 and 12");
+        }
+        if (day < 1 || day > 31) {
+            throw new IllegalArgumentException("Day must be between 1 and 31");
+        }
+
+        // Build date string for parsing
+        String dateStr = String.format("%04d-%02d-%02d", year, month, day);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        sdf.setLenient(false);
+        Date date = sdf.parse(dateStr);
+
+        // Check date not before today
+        Date today = sdf.parse(sdf.format(new Date()));
+        if (date.before(today)) {
+            throw new IllegalArgumentException("Date cannot be before today");
+        }
+
         String venue = venueField.getText().trim();
         String type = (String) typeCombo.getSelectedItem();
         int capacity = Integer.parseInt(capacityField.getText().trim());
-        int fee = Integer.parseInt(feeField.getText().trim());
+
+        String feeText = feeField.getText();
+        int fee = 0;
+        if (feeText != null && !feeText.trim().isEmpty()) {
+            fee = Integer.parseInt(feeText.trim());
+        }
 
         return new Event.EventBuilder()
                 .eventName(name)

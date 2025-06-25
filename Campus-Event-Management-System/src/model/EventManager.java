@@ -21,6 +21,8 @@ public class EventManager implements EventSubject {
     public EventManager(String filepath) {
         this.filePath = filepath;
         this.eventList = readEventsFromTxt(filepath);
+        System.out.println(observers);
+        notifyObservers(eventList);
     }
 
     public static List<Event> readEventsFromTxt(String filepath) {
@@ -147,6 +149,10 @@ public class EventManager implements EventSubject {
 
     // if event is added
     public void addEvent(Event newEvent) {
+        // add id into new event
+        String newId = "E" + (eventList.size() + 1);
+        newEvent.setEventId(newId);
+
         eventList.add(newEvent);
         saveEventsToFile();
         eventsUpdated();
