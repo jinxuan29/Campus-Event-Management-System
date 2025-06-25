@@ -125,6 +125,16 @@ public class EventManager implements EventSubject {
         return eventList;
     }
 
+    // get event by id
+    public Event getEventById(String eventId) {
+        for (Event event : eventList) {
+            if (event.getEventId().equals(eventId)) {
+                return event;
+            }
+        }
+        return null;
+    }
+
     // implement observer method
     @Override
     public void registerObserver(EventObserver observer) {
