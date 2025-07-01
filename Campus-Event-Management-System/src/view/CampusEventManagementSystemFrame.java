@@ -37,6 +37,11 @@ public class CampusEventManagementSystemFrame extends JFrame {
         EventPageView eventPageView = new EventPageView();
         EventPageController eventController = new EventPageController(eventManager, eventPageView);
         registerPage("EVENTS", eventPageView.getMainPanel());
+
+        // REGISTRATION page
+        RegistrationPageView registrationView = new RegistrationPageView();
+        RegistrationController registrationController = new RegistrationController(eventManager, registrationView, currentUser);
+        registerPage("REGISTRATIONS", registrationView.getMainPanel());
     }
 
     public void registerPage(String name, JPanel panel) {
