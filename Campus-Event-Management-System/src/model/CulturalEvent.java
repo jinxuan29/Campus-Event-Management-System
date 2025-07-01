@@ -5,14 +5,18 @@ public class CulturalEvent extends Event {
         super(builder);
     }
 
-    public static class CulturalEventBuilder extends Event.EventBuilder {
-        private final String typeEvent = "CulturalEvents";
+    public static class CulturalEventBuilder extends Event.EventBuilder<CulturalEventBuilder> {
+        private static final String typeEvent = "Cultural";
 
         public CulturalEventBuilder() {
             super.eventType(typeEvent);
         }
 
-        // can set extra validation or others here
+        @Override
+        protected CulturalEventBuilder self() {
+            return this;
+        }
+
         @Override
         public CulturalEvent build() {
             return new CulturalEvent(this);

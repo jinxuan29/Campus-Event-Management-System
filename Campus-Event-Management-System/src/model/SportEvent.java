@@ -5,14 +5,23 @@ public class SportEvent extends Event {
         super(builder);
     }
 
-    public static class SportEventBuilder extends Event.EventBuilder {
-        private final String typeEvent = "SportEvents";
+    public static class SportEventBuilder extends Event.EventBuilder<SportEventBuilder> {
+        private static final String typeEvent = "sport";
 
         public SportEventBuilder() {
             super.eventType(typeEvent);
         }
 
-        // can set extra validation or others here
+        @Override
+        public SportEventBuilder eventType(String type) {
+            throw new UnsupportedOperationException("Sport event type is fixed to 'Sport'");
+        }
+
+        @Override
+        protected SportEventBuilder self() {
+            return this;
+        }
+
         @Override
         public SportEvent build() {
             return new SportEvent(this);

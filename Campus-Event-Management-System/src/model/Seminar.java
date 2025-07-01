@@ -6,14 +6,17 @@ public class Seminar extends Event {
         super(builder);
     }
 
-    public static class SeminarBuilder extends Event.EventBuilder {
-        private final String typeEvent = "Seminars";
+    public static class SeminarBuilder extends EventBuilder<SeminarBuilder> {
+        private final String typeEvent = "Seminar";
 
         public SeminarBuilder() {
-            super.eventType(typeEvent);
+            eventType(typeEvent);
         }
 
-        // Dont allow changes to other event type
+        @Override
+        protected SeminarBuilder self() {
+            return this;
+        }
 
         @Override
         public Seminar build() {

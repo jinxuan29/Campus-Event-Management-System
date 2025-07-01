@@ -4,60 +4,82 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Registration {
+public class EventRegistration {
     private String registrationId;
     private String userId;
     private String eventId;
     private Date registrationDate;
+    private double paymentAmount;
     private String status;
-    private String userRole;
     private List<Service> selectedServices = new ArrayList<>();
-    private Discount appliedDiscount;
+    private Voucher appliedDiscount;
 
-    public Registration(RegistrationBuilder builder) {
+    public EventRegistration(EventRegistrationBuilder builder) {
         this.registrationId = builder.registrationId;
         this.userId = builder.userId;
         this.eventId = builder.eventId;
         this.registrationDate = builder.registrationDate;
+        this.paymentAmount = builder.paymentAmount;
         this.status = builder.status;
-        this.userRole = builder.userRole;
         this.selectedServices = builder.selectedServices;
         this.appliedDiscount = builder.appliedDiscount;
     }
 
-    public static class RegistrationBuilder {
+    public static class EventRegistrationBuilder {
         private String registrationId;
         private String userId;
         private String eventId;
         private Date registrationDate = new Date();
-        private String status = "PENDING";
-        private String userRole;
+        private double paymentAmount;
+        private String status = "SUCCEED";
         private List<Service> selectedServices = new ArrayList<>();
-        private Discount appliedDiscount;
+        private Voucher appliedDiscount;
 
-        public RegistrationBuilder userId(String userId) {
+        public EventRegistrationBuilder registrationId(String registrationId) {
+            this.registrationId = registrationId;
+            return this;
+        }
+
+        public EventRegistrationBuilder userId(String userId) {
             this.userId = userId;
             return this;
         }
 
-        public RegistrationBuilder eventId(String eventId) {
+        public EventRegistrationBuilder eventId(String eventId) {
             this.eventId = eventId;
             return this;
         }
 
-        public RegistrationBuilder addService(Service service) {
+        public EventRegistrationBuilder registrationDate(Date registrationDate) {
+            this.registrationDate = registrationDate;
+            return this;
+        }
+
+        public EventRegistrationBuilder paymentAmount(double paymentAmount) {
+            this.paymentAmount = paymentAmount;
+            return this;
+        }
+
+        public EventRegistrationBuilder status(String status) {
+            this.status = status;
+            return this;
+        }
+
+        public EventRegistrationBuilder addService(Service service) {
             this.selectedServices.add(service);
             return this;
         }
 
-        public RegistrationBuilder applyDiscount(Discount discount) {
+        public EventRegistrationBuilder applyDiscount(Voucher discount) {
             this.appliedDiscount = discount;
             return this;
         }
 
-        public Registration build() {
-            this.registrationId = "REG" + System.currentTimeMillis();
-            return new Registration(this);
+        public EventRegistration build() {
+            if (registrationId == null) {
+                this.registrationId = "REG" + System.currentTimeMillis();
+            }
+            return new EventRegistration(this);
         }
     }
 
@@ -78,12 +100,12 @@ public class Registration {
         return registrationDate;
     }
 
-    public String getStatus() {
-        return status;
+    public double getPaymentAmount() {
+        return paymentAmount;
     }
 
-    public String getUserRole() {
-        return userRole;
+    public String getStatus() {
+        return status;
     }
 
     public List<Service> getSelectedServices() {
@@ -94,7 +116,7 @@ public class Registration {
         selectedServices.add(service);
     }
 
-    public Discount getAppliedDiscount() {
+    public Voucher getAppliedDiscount() {
         return appliedDiscount;
     }
 }

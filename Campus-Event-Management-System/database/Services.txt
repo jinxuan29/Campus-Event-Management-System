@@ -1,0 +1,4 @@
+SVC001,Transport to LRT,5.0,Transport
+SVC002,Lunch Meal,10.0,Catering
+SVC003,Dinner Meal,10.0,Catering
+SVC004,Photo Booth Access,8.0,PhotoTaking

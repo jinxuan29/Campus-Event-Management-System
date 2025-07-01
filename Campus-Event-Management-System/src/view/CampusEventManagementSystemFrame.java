@@ -2,11 +2,13 @@ package view;
 
 import controller.EventPageController;
 import controller.RegistrationPageController;
+import controller.ReportsPageController;
 import java.awt.CardLayout;
 import java.awt.Component;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import model.EventManager;
+import model.manager.EventManager;
+import model.manager.RegistrationManager;
 
 public class CampusEventManagementSystemFrame extends JFrame {
     private JPanel cardPanel;
@@ -27,25 +29,39 @@ public class CampusEventManagementSystemFrame extends JFrame {
     }
 
     private void initializeUI() {
-        // Read Database
-        EventManager eventManager = new EventManager("Campus-Event-Management-System/database/Event.txt");
-
         // HOME page
         HomePageView homePageView = new HomePageView();
         registerPage("HOME", homePageView.getMainPanel());
 
         // EVENTS page
         EventPageView eventPageView = new EventPageView();
-        EventPageController eventController = new EventPageController(eventManager, eventPageView);
+        EventPageController eventController = new EventPageController(eventPageView);
         registerPage("EVENTS", eventPageView.getMainPanel());
 
-        // REGISTRATION page (multi-step)
+        // REGISTRATION page
         RegistrationPageView registrationView = new RegistrationPageView();
 
-        RegistrationPageController registrationPageController = new controller.RegistrationPageController(eventManager,
+        RegistrationPageController registrationPageController = new controller.RegistrationPageController(
                 registrationView);
 
         registerPage("REGISTRATIONS", registrationView.getMainPanel());
+
+        // REPORT page
+        ReportsPageView reportView = new ReportsPageView();
+        ReportsPageController reportsPageController = new ReportsPageController(reportView);
+        registerPage("REPORTS", reportView.getMainPanel());
+
+        // Observers
+        EventManager eventManager = EventManager.getInstance();
+        eventManager.registerObserver(eventPageView);
+        eventManager.registerObserver(registrationView);
+
+        RegistrationManager registrationManager = RegistrationManager.getInstance();
+        registrationManager.registerObserver(eventManager);
+        registrationManager.registerObserver(reportView);
+
+        eventManager.eventsUpdated();
+        registrationManager.registrationUpdated();
     }
 
     public void registerPage(String name, JPanel panel) {

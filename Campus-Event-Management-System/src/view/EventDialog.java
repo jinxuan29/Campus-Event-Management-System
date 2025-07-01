@@ -6,7 +6,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.*;
+import model.CulturalEvent;
 import model.Event;
+import model.Seminar;
+import model.SportEvent;
+import model.Workshop;
 
 public class EventDialog extends JDialog {
     private JTextField nameField;
@@ -15,6 +19,7 @@ public class EventDialog extends JDialog {
     private JTextField dayField;
     private JTextField venueField;
     private JComboBox<String> typeCombo;
+    private JTextField currentCapacityField;
     private JTextField capacityField;
     private JTextField feeField;
     private JButton confirmButton;
@@ -23,22 +28,23 @@ public class EventDialog extends JDialog {
         setTitle(title);
         setModal(true);
         setLayout(new BorderLayout());
-        setSize(400, 350);
+        setSize(400, 400);
         setLocationRelativeTo(null);
 
-        JPanel formPanel = new JPanel(new GridLayout(7, 2, 5, 5));
+        JPanel formPanel = new JPanel(new GridLayout(8, 2, 5, 5));
 
         nameField = new JTextField();
-
         yearField = new JTextField();
         yearField.setColumns(4);
         monthField = new JTextField();
         monthField.setColumns(2);
         dayField = new JTextField();
         dayField.setColumns(2);
-
         venueField = new JTextField();
         typeCombo = new JComboBox<>(new String[] { "seminar", "workshop", "cultural", "sports" });
+        currentCapacityField = new JTextField();
+        currentCapacityField.setEditable(false);
+        currentCapacityField.setEnabled(false);
         capacityField = new JTextField();
         feeField = new JTextField();
 
@@ -51,11 +57,13 @@ public class EventDialog extends JDialog {
             yearField.setText(sdfYear.format(d));
             monthField.setText(sdfMonth.format(d));
             dayField.setText(sdfDay.format(d));
-
             venueField.setText(existingEvent.getEventVenue());
             typeCombo.setSelectedItem(existingEvent.getEventType());
+            currentCapacityField.setText(String.valueOf(existingEvent.getCurrentCapacity()));
             capacityField.setText(String.valueOf(existingEvent.getEventCapacity()));
             feeField.setText(String.valueOf(existingEvent.getRegistrationFee()));
+        } else {
+            currentCapacityField.setText("0");
         }
 
         formPanel.add(new JLabel("Event Name:"));
@@ -75,6 +83,9 @@ public class EventDialog extends JDialog {
 
         formPanel.add(new JLabel("Type:"));
         formPanel.add(typeCombo);
+
+        formPanel.add(new JLabel("Current Registrations (Read Only):"));
+        formPanel.add(currentCapacityField);
 
         formPanel.add(new JLabel("Capacity:"));
         formPanel.add(capacityField);
@@ -117,7 +128,6 @@ public class EventDialog extends JDialog {
         int month = Integer.parseInt(monthStr);
         int day = Integer.parseInt(dayStr);
 
-        // Basic validation of month and day ranges
         if (month < 1 || month > 12) {
             throw new IllegalArgumentException("Month must be between 1 and 12");
         }
@@ -125,14 +135,12 @@ public class EventDialog extends JDialog {
             throw new IllegalArgumentException("Day must be between 1 and 31");
         }
 
-        // Build date string for parsing
         String dateStr = String.format("%04d-%02d-%02d", year, month, day);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         sdf.setLenient(false);
         Date date = sdf.parse(dateStr);
-
-        // Check date not before today
         Date today = sdf.parse(sdf.format(new Date()));
+
         if (date.before(today)) {
             throw new IllegalArgumentException("Date cannot be before today");
         }
@@ -141,19 +149,60 @@ public class EventDialog extends JDialog {
         String type = (String) typeCombo.getSelectedItem();
         int capacity = Integer.parseInt(capacityField.getText().trim());
 
+        int currentCapacity = 0;
+        String currentCapText = currentCapacityField.getText().trim();
+        if (!currentCapText.isEmpty()) {
+            currentCapacity = Integer.parseInt(currentCapText);
+        }
+        if (currentCapacity < 0 || currentCapacity > capacity) {
+            throw new IllegalArgumentException("Current capacity must be between 0 and total capacity");
+        }
+
         String feeText = feeField.getText();
         int fee = 0;
         if (feeText != null && !feeText.trim().isEmpty()) {
             fee = Integer.parseInt(feeText.trim());
         }
 
-        return new Event.EventBuilder()
-                .eventName(name)
-                .eventDate(date)
-                .eventVenue(venue)
-                .eventType(type)
-                .eventCapacity(capacity)
-                .registrationFee(fee)
-                .build();
+        switch (type) {
+            case "seminar":
+                return new Seminar.SeminarBuilder()
+                        .eventName(name)
+                        .eventDate(date)
+                        .eventVenue(venue)
+                        .currentCapacity(currentCapacity)
+                        .eventCapacity(capacity)
+                        .registrationFee(fee)
+                        .build();
+            case "workshop":
+                return new Workshop.WorkshopBuilder()
+                        .eventName(name)
+                        .eventDate(date)
+                        .eventVenue(venue)
+                        .currentCapacity(currentCapacity)
+                        .eventCapacity(capacity)
+                        .registrationFee(fee)
+                        .build();
+            case "cultural":
+                return new CulturalEvent.CulturalEventBuilder()
+                        .eventName(name)
+                        .eventDate(date)
+                        .eventVenue(venue)
+                        .currentCapacity(currentCapacity)
+                        .eventCapacity(capacity)
+                        .registrationFee(fee)
+                        .build();
+            case "sports":
+                return new SportEvent.SportEventBuilder()
+                        .eventName(name)
+                        .eventDate(date)
+                        .eventVenue(venue)
+                        .currentCapacity(currentCapacity)
+                        .eventCapacity(capacity)
+                        .registrationFee(fee)
+                        .build();
+            default:
+                throw new IllegalArgumentException("Unknown event type: " + type);
+        }
     }
 }

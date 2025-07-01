@@ -1,4 +1,3 @@
-
 package model;
 
 import java.util.Date;
@@ -10,6 +9,7 @@ public class Event {
     private String eventVenue;
     private String eventType;
     private int eventCapacity;
+    private int currentCapacity;
     private int registrationFee;
 
     protected Event(EventBuilder builder) {
@@ -19,6 +19,7 @@ public class Event {
         this.eventVenue = builder.eventVenue;
         this.eventType = builder.eventType;
         this.eventCapacity = builder.eventCapacity;
+        this.currentCapacity = builder.currentCapacity;
         this.registrationFee = builder.registrationFee;
     }
 
@@ -45,6 +46,10 @@ public class Event {
 
     public int getEventCapacity() {
         return eventCapacity;
+    }
+
+    public int getCurrentCapacity() {
+        return currentCapacity;
     }
 
     public int getRegistrationFee() {
@@ -75,18 +80,23 @@ public class Event {
         this.eventCapacity = eventCapacity;
     }
 
+    public void setCurrentCapacity(int currentCapacity) {
+        this.currentCapacity = currentCapacity;
+    }
+
     public void setRegistrationFee(int registrationFee) {
         this.registrationFee = registrationFee;
     }
 
     public String getDetails() {
         return String.format(
-                "Event ID: %s\nName: %s\nDate: %s\nVenue: %s\nType: %s\nCapacity: %d\nFee: RM%d",
+                "Event ID: %s\nName: %s\nDate: %s\nVenue: %s\nType: %s\nCapacity: %d/%d\nFee: RM%d",
                 eventId,
                 eventName,
                 eventDate.toString(),
                 eventVenue,
                 eventType,
+                currentCapacity,
                 eventCapacity,
                 registrationFee);
     }
@@ -96,14 +106,18 @@ public class Event {
         return eventName;
     }
 
-    public static class EventBuilder {
+    public static class EventBuilder<T extends EventBuilder<T>> {
         protected String eventId;
         protected String eventName;
         protected Date eventDate;
         protected String eventVenue;
         protected String eventType;
+        protected int currentCapacity = 0;
         protected int eventCapacity;
         protected int registrationFee;
+
+        public EventBuilder() {
+        }
 
         public EventBuilder(Event event) {
             this.eventId = event.getEventId();
@@ -112,49 +126,56 @@ public class Event {
             this.eventVenue = event.getEventVenue();
             this.eventType = event.getEventType();
             this.eventCapacity = event.getEventCapacity();
+            this.currentCapacity = event.getCurrentCapacity();
             this.registrationFee = event.getRegistrationFee();
         }
 
-        public EventBuilder() {
+        protected T self() {
+            return (T) this;
         }
 
-        public EventBuilder eventId(String eventId) {
+        public T eventId(String eventId) {
             this.eventId = eventId;
-            return this;
+            return self();
         }
 
-        public EventBuilder eventName(String name) {
+        public T eventName(String name) {
             this.eventName = name;
-            return this;
+            return self();
         }
 
-        public EventBuilder eventDate(Date date) {
+        public T eventDate(Date date) {
             this.eventDate = date;
-            return this;
+            return self();
         }
 
-        public EventBuilder eventVenue(String venue) {
+        public T eventVenue(String venue) {
             this.eventVenue = venue;
-            return this;
+            return self();
         }
 
-        public EventBuilder eventType(String type) {
+        public T eventType(String type) {
             this.eventType = type;
-            return this;
+            return self();
         }
 
-        public EventBuilder eventCapacity(int capacity) {
+        public T eventCapacity(int capacity) {
             this.eventCapacity = capacity;
-            return this;
+            return self();
         }
 
-        public EventBuilder registrationFee(int fee) {
+        public T currentCapacity(int currentCapacity) { // New builder method
+            this.currentCapacity = currentCapacity;
+            return self();
+        }
+
+        public T registrationFee(int fee) {
             this.registrationFee = fee;
-            return this;
+            return self();
         }
 
         public Event build() {
             return new Event(this);
-        };
+        }
     }
 }

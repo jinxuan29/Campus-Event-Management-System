@@ -1,13 +1,16 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import model.Event;
+import model.observer.EventObserver;
+import shared.Navigation;
 
-public class RegistrationPageView extends PageView {
+public class RegistrationPageView extends PageView implements EventObserver {
     private JList<Event> eventList;
     private JButton registerButton;
     private JTextArea eventDetailsArea;
@@ -23,15 +26,12 @@ public class RegistrationPageView extends PageView {
         // Event list
         eventList = new JList<>();
         eventList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        eventList.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                Event selectedEvent = eventList.getSelectedValue();
-                if (selectedEvent != null) {
-                    displayEventDetails(selectedEvent.getDetails());
-                } else {
-                    displayEventDetails("");
-                }
+        eventList.addListSelectionListener((ListSelectionEvent e) -> {
+            Event selectedEvent = eventList.getSelectedValue();
+            if (selectedEvent != null) {
+                displayEventDetails(selectedEvent.getDetails());
+            } else {
+                displayEventDetails("");
             }
         });
 
@@ -42,9 +42,24 @@ public class RegistrationPageView extends PageView {
         eventDetailsArea.setEditable(false);
         panel.add(new JScrollPane(eventDetailsArea), BorderLayout.CENTER);
 
-        // Register button at bottom
+        // Create button panel for bottom right
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 5));
+
+        // Register button
         registerButton = new JButton("Register for this Event");
-        panel.add(registerButton, BorderLayout.SOUTH);
+        registerButton.setPreferredSize(new Dimension(180, 30));
+
+        // Home button
+        JButton homeButton = new JButton("Home");
+        homeButton.setPreferredSize(new Dimension(100, 30));
+        homeButton.addActionListener(e -> Navigation.navigateTo("HOME"));
+
+        // Add buttons to button panel
+        buttonPanel.add(registerButton);
+        buttonPanel.add(homeButton);
+
+        // Add button panel to main panel (SOUTH)
+        panel.add(buttonPanel, BorderLayout.SOUTH);
 
         return panel;
     }
@@ -67,5 +82,11 @@ public class RegistrationPageView extends PageView {
 
     public void displayEventDetails(String details) {
         eventDetailsArea.setText(details);
+    }
+
+    // update function if changes
+    @Override
+    public void update(List<Event> events) {
+        displayEvents(events);
     }
 }

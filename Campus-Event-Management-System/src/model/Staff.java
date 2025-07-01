@@ -18,7 +18,6 @@ public class Staff extends User {
             return this.userId(staffId); // Map to userId
         }
 
-        // Disallow manual role changes
         @Override
         public Builder role(String role) {
             throw new UnsupportedOperationException("Staff role cannot be changed from 'STAFF'");

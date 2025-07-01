@@ -2,7 +2,8 @@ package controller;
 
 import javax.swing.JOptionPane;
 import model.Event;
-import model.EventManager;
+import model.manager.EventManager;
+import model.manager.RegistrationManager;
 import view.EventDialog;
 import view.EventPageView;
 
@@ -10,11 +11,11 @@ public class EventPageController {
     private final EventManager eventManager;
     private final EventPageView view;
 
-    public EventPageController(EventManager eventManager, EventPageView view) {
-        this.eventManager = eventManager;
+    public EventPageController(EventPageView view) {
+        this.eventManager = EventManager.getInstance();
         this.view = view;
 
-        this.eventManager.registerObserver(view);
+        // this.eventManager.registerObserver(view);
         this.eventManager.eventsUpdated();
 
         setupEventListeners();
@@ -65,19 +66,33 @@ public class EventPageController {
     }
 
     private void showUpdateDialog(Event selectedEvent) {
+        // Get registration count for this event
+        RegistrationManager regManager = RegistrationManager.getInstance();
+        long registrationsCount = regManager.getRegistrations().stream()
+                .filter(reg -> reg.getEventId().equals(selectedEvent.getEventId()))
+                .count();
+
         EventDialog dialog = new EventDialog("Update Event", selectedEvent);
 
         dialog.setConfirmActionListener(e -> {
             try {
                 Event updatedFields = dialog.getEventFromFields();
-                Event updatedEvent = new Event.EventBuilder(selectedEvent) // existing event as base
+
+                // Calculate remaining capacity = eventCapacity - registered users count
+                int remainingCapacity = updatedFields.getEventCapacity() - (int) registrationsCount;
+                if (remainingCapacity < 0)
+                    remainingCapacity = 0;
+
+                Event updatedEvent = new Event.EventBuilder(selectedEvent)
                         .eventName(updatedFields.getEventName())
                         .eventDate(updatedFields.getEventDate())
                         .eventVenue(updatedFields.getEventVenue())
                         .eventType(updatedFields.getEventType())
+                        .currentCapacity(remainingCapacity)
                         .eventCapacity(updatedFields.getEventCapacity())
                         .registrationFee(updatedFields.getRegistrationFee())
                         .build();
+
                 eventManager.updateEvent(selectedEvent.getEventId(), updatedEvent);
                 dialog.dispose();
             } catch (Exception ex) {

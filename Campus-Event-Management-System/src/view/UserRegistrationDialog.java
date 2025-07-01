@@ -23,6 +23,8 @@ public class UserRegistrationDialog extends JDialog {
     private JTextField phoneField;
     private JButton confirmButton;
     private JButton backButton;
+    private JRadioButton studentRadio;
+    private JRadioButton staffRadio;
 
     public UserRegistrationDialog(String title) {
         setTitle(title);
@@ -57,8 +59,9 @@ public class UserRegistrationDialog extends JDialog {
 
         confirmButton = new JButton("Confirm");
         confirmButton.setVisible(false);
-        buttonPanel.add(backButton);
+
         buttonPanel.add(confirmButton);
+        buttonPanel.add(backButton);
 
         add(mainPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
@@ -90,8 +93,8 @@ public class UserRegistrationDialog extends JDialog {
             if (existingUserRadio.isSelected() || newUserRadio.isSelected()) {
                 showAppropriateForm();
                 cardLayout.show(mainPanel, "form");
-                backButton.setVisible(true);
                 confirmButton.setVisible(true);
+                backButton.setVisible(true);
             }
         };
 
@@ -134,8 +137,8 @@ public class UserRegistrationDialog extends JDialog {
             // Role selection for new users
             JPanel rolePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
             rolePanel.add(new JLabel("Role:"));
-            JRadioButton studentRadio = new JRadioButton("Student");
-            JRadioButton staffRadio = new JRadioButton("Staff");
+            this.studentRadio = new JRadioButton("Student");
+            this.staffRadio = new JRadioButton("Staff");
             ButtonGroup roleGroup = new ButtonGroup();
             roleGroup.add(studentRadio);
             roleGroup.add(staffRadio);
@@ -169,9 +172,9 @@ public class UserRegistrationDialog extends JDialog {
                 throw new IllegalArgumentException("All fields must be filled");
             }
 
-            String name = nameField.getText().trim();
-            String email = emailField.getText().trim();
-            String phone = phoneField.getText().trim();
+            String name = nameField.getText().trim().replace(",", "");
+            String email = emailField.getText().trim().replace(",", "");
+            String phone = phoneField.getText().trim().replace(",", "");
 
             if (!email.contains("@") || !email.contains(".")) {
                 throw new IllegalArgumentException("Invalid email format");
@@ -181,14 +184,24 @@ public class UserRegistrationDialog extends JDialog {
                 throw new IllegalArgumentException("Phone number must contain only digits");
             }
 
-            // Determine role (this would need to track the selected radio button)
-            // For simplicity, assuming student is default
-            return new Student.Builder()
-                    .studentId(id)
-                    .name(name)
-                    .email(email)
-                    .phone(phone)
-                    .build();
+            if (studentRadio.isSelected()) {
+                return new Student.Builder()
+                        .studentId(id)
+                        .name(name)
+                        .email(email)
+                        .phone(phone)
+                        .build();
+            } else if (staffRadio.isSelected()) {
+                return new model.Staff.Builder()
+                        .staffId(id)
+                        .name(name)
+                        .email(email)
+                        .phone(phone)
+                        .build();
+            } else {
+                throw new IllegalArgumentException("Please select a role (Student or Staff)");
+            }
+
         }
     }
 

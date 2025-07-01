@@ -11,7 +11,7 @@ public class Student extends User {
         private final String role = "STUDENT";
 
         public Builder() {
-            super.role(this.role); // Set role early and lock it
+            super.role(this.role);
         }
 
         public Builder studentId(String studentId) {
