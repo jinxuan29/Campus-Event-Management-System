@@ -1,1 +1,1 @@
-registration_id, user_id, event_id, registration_date, status, user_role
+registration_id, user_id, event_id, registration_date, status, user_role, base_fee, services_fee, discount_amount, total_amount, selected_services, applied_discount

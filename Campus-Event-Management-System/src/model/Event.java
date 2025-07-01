@@ -1,4 +1,3 @@
-
 package model;
 
 import java.util.Date;
@@ -11,6 +10,7 @@ public class Event {
     private String eventType;
     private int eventCapacity;
     private int registrationFee;
+    private double baseFee;
 
     protected Event(EventBuilder builder) {
         this.eventId = builder.eventId;
@@ -20,9 +20,9 @@ public class Event {
         this.eventType = builder.eventType;
         this.eventCapacity = builder.eventCapacity;
         this.registrationFee = builder.registrationFee;
+        this.baseFee = builder.baseFee;
     }
 
-    // Getters and Setters
     public String getEventId() {
         return eventId;
     }
@@ -49,6 +49,10 @@ public class Event {
 
     public int getRegistrationFee() {
         return registrationFee;
+    }
+
+    public double getBaseFee() {
+        return baseFee;
     }
 
     public void setEventId(String eventId) {
@@ -79,6 +83,10 @@ public class Event {
         this.registrationFee = registrationFee;
     }
 
+    public void setBaseFee(double baseFee) {
+        this.baseFee = baseFee;
+    }
+
     public static class EventBuilder {
         protected String eventId;
         protected String eventName;
@@ -87,6 +95,7 @@ public class Event {
         protected String eventType;
         protected int eventCapacity;
         protected int registrationFee;
+        protected double baseFee;
 
         public EventBuilder(Event event) {
             this.eventId = event.getEventId();
@@ -96,6 +105,7 @@ public class Event {
             this.eventType = event.getEventType();
             this.eventCapacity = event.getEventCapacity();
             this.registrationFee = event.getRegistrationFee();
+            this.baseFee = event.getBaseFee();
         }
 
         public EventBuilder() {
@@ -136,8 +146,13 @@ public class Event {
             return this;
         }
 
+        public EventBuilder baseFee(double baseFee) {
+            this.baseFee = baseFee;
+            return this;
+        }
+
         public Event build() {
             return new Event(this);
-        };
+        }
     }
 }

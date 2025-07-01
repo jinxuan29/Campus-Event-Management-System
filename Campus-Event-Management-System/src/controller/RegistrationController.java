@@ -2,6 +2,7 @@ package controller;
 
 import model.*;
 import view.RegistrationPageView;
+import java.util.List;
 
 public class RegistrationController {
     private final RegistrationPageView view;
@@ -24,24 +25,26 @@ public class RegistrationController {
         List<Service> selectedServices = view.getSelectedServices();
         Discount discount = view.getSelectedDiscount();
 
+        double baseFee = selectedEvent.getRegistrationFee();
+        double servicesFee = selectedServices.stream().mapToDouble(Service::getServiceFee).sum();
+        double discountAmount = discount != null ? discount.applyDiscount(baseFee + servicesFee) : 0;
+        double total = baseFee + servicesFee - discountAmount;
+
         Registration registration = new Registration.RegistrationBuilder()
             .userId(currentUser.getUserId())
             .eventId(selectedEvent.getEventId())
-            .applyDiscount(discount)
+            .baseFee(baseFee)
+            .servicesFee(servicesFee)
+            .discountAmount(discountAmount)
+            .totalAmount(total)
             .build();
 
         selectedServices.forEach(registration::addService);
+        registration.save();
 
-        Bill bill = calculateBill(selectedEvent, selectedServices, discount);
+        Bill bill = new Bill(baseFee, servicesFee, discountAmount, total);
+        bill.save();
+
         view.displayBill(bill);
-    }
-
-    private Bill calculateBill(Event event, List<Service> services, Discount discount) {
-        double baseFee = event.getRegistrationFee();
-        double servicesFee = services.stream().mapToDouble(Service::getServiceFee).sum();
-        double discountAmount = discount != null ? 
-            discount.applyDiscount(baseFee + servicesFee) : 0;
-
-        return new Bill(baseFee, servicesFee, discountAmount);
     }
 }

@@ -7,7 +7,18 @@ public abstract class Discount {
 
     public abstract double applyDiscount(double originalAmount);
 
-    // Concrete discount types
+    public String getDiscountId() {
+        return discountId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public double getDiscountValue() {
+        return discountValue;
+    }
+
     public static class EarlyBirdDiscount extends Discount {
         public EarlyBirdDiscount() {
             this.discountId = "DISC-EB";
