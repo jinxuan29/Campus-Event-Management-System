@@ -1,1 +1,1 @@
-bill_id, registration_id, base_fee, services_fee, discount_amount, total_payable
+bill_id, registration_id, base_fee, services_fee, discount_amount, total_payable, total_before_discount
