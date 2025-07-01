@@ -121,6 +121,21 @@ public class EventManager implements EventSubject {
         }
     }
 
+    // file handling
+    public void saveRegistration(Registration registration) {
+    try (PrintWriter writer = new PrintWriter(new FileWriter("database/EventRegistration.txt", true))) {
+        writer.println(String.join(",",
+            registration.getRegistrationId(),
+            registration.getUserId(),
+            registration.getEventId(),
+            new SimpleDateFormat("yyyy-MM-dd").format(registration.getRegistrationDate()),
+            registration.getStatus(),
+            registration.getUserRole()));
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+
     public List<Event> getEvents() {
         return eventList;
     }
