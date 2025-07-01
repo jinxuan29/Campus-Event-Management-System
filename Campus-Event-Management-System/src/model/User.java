@@ -1,18 +1,61 @@
 package model;
 
 public class User {
+
     private String userId;
     private String name;
     private String email;
     private String phone;
     private String role;
 
-    protected User(UserBuilder userMaker) {
-        this.userId = userMaker.userId;
-        this.name = userMaker.name;
-        this.email = userMaker.email;
-        this.phone = userMaker.phone;
-        this.role = userMaker.role;
+    protected User(Builder<?> builder) {
+        this.userId = builder.userId;
+        this.name = builder.name;
+        this.email = builder.email;
+        this.phone = builder.phone;
+        this.role = builder.role;
+    }
+
+    // Getter methods
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    // Setter methods
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     @Override
@@ -20,42 +63,46 @@ public class User {
         return userId + "," + name + "," + email + "," + phone;
     }
 
-    // UserBuilder class
-    public static class UserBuilder {
-        private String userId;
-        private String name;
-        private String email;
-        private String phone;
-        private String role;
+    // Generic Builder class for extensibility
+    public static class Builder<T extends Builder<T>> {
 
-        public UserBuilder userId(String userId) {
+        protected String userId;
+        protected String name;
+        protected String email;
+        protected String phone;
+        protected String role;
+
+        protected T self() {
+            return (T) this;
+        }
+
+        public T userId(String userId) {
             this.userId = userId;
-            return this;
+            return self();
         }
 
-        public UserBuilder name(String name) {
+        public T name(String name) {
             this.name = name;
-            return this;
+            return self();
         }
 
-        public UserBuilder email(String email) {
+        public T email(String email) {
             this.email = email;
-            return this;
+            return self();
         }
 
-        public UserBuilder phone(String phone) {
+        public T phone(String phone) {
             this.phone = phone;
-            return this;
+            return self();
         }
 
-        public UserBuilder role(String role) {
+        public T role(String role) {
             this.role = role;
-            return this;
+            return self();
         }
 
         public User build() {
             return new User(this);
         }
-
     }
 }

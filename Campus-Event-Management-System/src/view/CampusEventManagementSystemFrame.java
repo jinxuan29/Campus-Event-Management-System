@@ -1,6 +1,7 @@
 package view;
 
 import controller.EventPageController;
+import controller.RegistrationPageController;
 import java.awt.CardLayout;
 import java.awt.Component;
 import javax.swing.JFrame;
@@ -38,9 +39,12 @@ public class CampusEventManagementSystemFrame extends JFrame {
         EventPageController eventController = new EventPageController(eventManager, eventPageView);
         registerPage("EVENTS", eventPageView.getMainPanel());
 
-        // REGISTRATION page
+        // REGISTRATION page (multi-step)
         RegistrationPageView registrationView = new RegistrationPageView();
-        RegistrationController registrationController = new RegistrationController(eventManager, registrationView, currentUser);
+
+        RegistrationPageController registrationPageController = new controller.RegistrationPageController(eventManager,
+                registrationView);
+
         registerPage("REGISTRATIONS", registrationView.getMainPanel());
     }
 

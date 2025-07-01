@@ -79,6 +79,23 @@ public class Event {
         this.registrationFee = registrationFee;
     }
 
+    public String getDetails() {
+        return String.format(
+                "Event ID: %s\nName: %s\nDate: %s\nVenue: %s\nType: %s\nCapacity: %d\nFee: RM%d",
+                eventId,
+                eventName,
+                eventDate.toString(),
+                eventVenue,
+                eventType,
+                eventCapacity,
+                registrationFee);
+    }
+
+    @Override
+    public String toString() {
+        return eventName;
+    }
+
     public static class EventBuilder {
         protected String eventId;
         protected String eventName;

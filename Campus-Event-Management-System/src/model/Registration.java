@@ -62,12 +62,39 @@ public class Registration {
     }
 
     // Getters
-    public String getRegistrationId() { return registrationId; }
-    public String getUserId() { return userId; }
-    public String getEventId() { return eventId; }
-    public Date getRegistrationDate() { return registrationDate; }
-    public String getStatus() { return status; }
-    public String getUserRole() { return userRole; }
-    public List<Service> getSelectedServices() { return selectedServices; }
-    public Discount getAppliedDiscount() { return appliedDiscount; }
-    
+    public String getRegistrationId() {
+        return registrationId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getEventId() {
+        return eventId;
+    }
+
+    public Date getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public String getUserRole() {
+        return userRole;
+    }
+
+    public List<Service> getSelectedServices() {
+        return selectedServices;
+    }
+
+    public void addService(Service service) {
+        selectedServices.add(service);
+    }
+
+    public Discount getAppliedDiscount() {
+        return appliedDiscount;
+    }
+}

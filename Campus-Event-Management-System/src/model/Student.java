@@ -2,27 +2,31 @@ package model;
 
 public class Student extends User {
 
-    private Student(StudentBuilder builder) {
+    private Student(Builder builder) {
         super(builder);
     }
 
-    public static class StudentBuilder extends UserBuilder {
+    public static class Builder extends User.Builder<Builder> {
 
         private final String role = "STUDENT";
 
-        public StudentBuilder() {
-            super.role(this.role);
+        public Builder() {
+            super.role(this.role); // Set role early and lock it
         }
 
-        public StudentBuilder studentId(String studentId) {
-            super.userId(studentId);
-            return this;
+        public Builder studentId(String studentId) {
+            return this.userId(studentId);
         }
 
-        // Dont allow changes to other role
+        // Prevent changing the role
         @Override
-        public StudentBuilder role(String role) {
+        public Builder role(String role) {
             throw new UnsupportedOperationException("Student role cannot be changed from 'STUDENT'");
+        }
+
+        @Override
+        protected Builder self() {
+            return this;
         }
 
         @Override

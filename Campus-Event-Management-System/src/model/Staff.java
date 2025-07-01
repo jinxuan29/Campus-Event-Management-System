@@ -1,27 +1,32 @@
 package model;
 
 public class Staff extends User {
-    private Staff(StaffBuilder builder) {
+
+    private Staff(Builder builder) {
         super(builder);
     }
 
-    public static class StaffBuilder extends UserBuilder {
+    public static class Builder extends User.Builder<Builder> {
 
         private final String role = "STAFF";
 
-        public StaffBuilder() {
-            super.role(this.role);
+        public Builder() {
+            super.role(role); // Set role on creation
         }
 
-        public StaffBuilder StaffId(String StaffId) {
-            super.userId(StaffId);
-            return this;
+        public Builder staffId(String staffId) {
+            return this.userId(staffId); // Map to userId
         }
 
-        // Dont allow changes to other role
+        // Disallow manual role changes
         @Override
-        public StaffBuilder role(String role) {
+        public Builder role(String role) {
             throw new UnsupportedOperationException("Staff role cannot be changed from 'STAFF'");
+        }
+
+        @Override
+        protected Builder self() {
+            return this;
         }
 
         @Override
