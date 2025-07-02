@@ -110,6 +110,8 @@ public class UserManager implements UserSubject {
     public void removeUser(String userId) {
         if (users.remove(userId) != null) {
             writeUsersToFile();
+            RegistrationManager.getInstance().removeRegistrationsByUserId(userId); // remove the registration that has
+                                                                                   // user id init
             usersUpdated();
         }
     }
@@ -142,7 +144,7 @@ public class UserManager implements UserSubject {
     @Override
     public void notifyObservers(List<User> users) {
         for (UserObserver observer : observers) {
-            observer.update(users);
+            observer.updateUser(users);
         }
     }
 

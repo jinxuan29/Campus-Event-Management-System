@@ -5,32 +5,39 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import model.Event;
 import model.EventRegistration;
+import model.User;
+import model.manager.EventManager;
+import model.manager.RegistrationManager;
+import model.manager.UserManager;
+import model.observer.EventObserver;
 import model.observer.RegistrationObserver;
+import model.observer.UserObserver;
+import shared.Navigation;
 
-public class ReportsPageView extends PageView implements RegistrationObserver {
+public class ReportsPageView extends PageView implements RegistrationObserver, UserObserver, EventObserver {
 
     private JTable registrationTable;
     private DefaultTableModel tableModel;
 
-    private JButton createButton;
-    private JButton updateButton;
     private JButton deleteButton;
-    private JButton refreshButton;
 
     public ReportsPageView() {
         super("Event Registrations");
         setVisible(true);
     }
 
+    // Some bug have problem
     @Override
     protected JPanel createContentPanel() {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         String[] columns = {
-                "Registration ID", "User ID", "Event ID", "Date", "Status", "Payment Amount"
+                "Registration ID", "User ID", "User Name", "Event ID", "Event Name", "Date", "Status", "Payment Amount"
         };
+
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -46,15 +53,12 @@ public class ReportsPageView extends PageView implements RegistrationObserver {
 
         // Buttons panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        createButton = new JButton("Create");
-        updateButton = new JButton("Update");
         deleteButton = new JButton("Delete");
-        refreshButton = new JButton("Refresh");
+        JButton homeButton = new JButton("Home");
 
-        buttonPanel.add(createButton);
-        buttonPanel.add(updateButton);
         buttonPanel.add(deleteButton);
-        buttonPanel.add(refreshButton);
+        buttonPanel.add(homeButton);
+        homeButton.addActionListener(e -> Navigation.navigateTo("HOME"));
 
         panel.add(buttonPanel, BorderLayout.SOUTH);
 
@@ -64,11 +68,28 @@ public class ReportsPageView extends PageView implements RegistrationObserver {
     public void updateTable(List<EventRegistration> registrations) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         tableModel.setRowCount(0);
+
+        UserManager userManager = UserManager.getInstance();
+        EventManager eventManager = EventManager.getInstance();
+
         for (EventRegistration reg : registrations) {
+            String userId = reg.getUserId();
+            String eventId = reg.getEventId();
+
+            String userName = userManager.getUserFromId(userId) != null
+                    ? userManager.getUserFromId(userId).getName()
+                    : "Not Found";
+
+            String eventName = eventManager.getEventById(eventId) != null
+                    ? eventManager.getEventById(eventId).getEventName()
+                    : "Not Found";
+
             tableModel.addRow(new Object[] {
                     reg.getRegistrationId(),
-                    reg.getUserId(),
-                    reg.getEventId(),
+                    userId,
+                    userName,
+                    eventId,
+                    eventName,
                     sdf.format(reg.getRegistrationDate()),
                     reg.getStatus(),
                     String.format("RM%.2f", reg.getPaymentAmount())
@@ -87,24 +108,23 @@ public class ReportsPageView extends PageView implements RegistrationObserver {
         return (String) tableModel.getValueAt(row, 0);
     }
 
-    public JButton getCreateButton() {
-        return createButton;
-    }
-
-    public JButton getUpdateButton() {
-        return updateButton;
-    }
-
     public JButton getDeleteButton() {
         return deleteButton;
     }
 
-    public JButton getRefreshButton() {
-        return refreshButton;
+    @Override
+    public void updateRegistration(List<EventRegistration> registrations) {
+        updateTable(registrations);
     }
 
     @Override
-    public void update(List<EventRegistration> registrations) {
-        updateTable(registrations);
+    public void updateEvent(List<Event> events) {
+        updateTable(RegistrationManager.getInstance().getRegistrations());
     }
+
+    @Override
+    public void updateUser(List<User> events) {
+        updateTable(RegistrationManager.getInstance().getRegistrations());
+    }
+
 }

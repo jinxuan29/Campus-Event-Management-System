@@ -16,7 +16,7 @@ public class HomePageView extends PageView {
         panel.setOpaque(false);
 
         // Add custom buttons
-        String[] categories = { "EVENTS", "REGISTRATIONS", "REPORTS", "SETTINGS" };
+        String[] categories = { "EVENTS", "REGISTRATIONS", "REPORTS", "USERS" };
         Color[] colors = {
                 new Color(76, 175, 80),
                 new Color(33, 150, 243),

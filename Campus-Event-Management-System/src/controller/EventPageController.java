@@ -54,7 +54,7 @@ public class EventPageController {
         dialog.setConfirmActionListener(e -> {
             try {
                 Event newEvent = dialog.getEventFromFields();
-                eventManager.addEvent(newEvent); // Will trigger observer update
+                eventManager.addEvent(newEvent);
                 dialog.dispose();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(dialog, "Invalid input: " + ex.getMessage(),

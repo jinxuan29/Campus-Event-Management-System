@@ -125,19 +125,6 @@ public class EventManager implements EventSubject, RegistrationObserver {
         }
     }
 
-    public void saveRegistration(EventRegistration registration) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter("database/EventRegistration.txt", true))) {
-            writer.println(String.join(",",
-                    registration.getRegistrationId(),
-                    registration.getUserId(),
-                    registration.getEventId(),
-                    new SimpleDateFormat("yyyy-MM-dd").format(registration.getRegistrationDate()),
-                    registration.getStatus()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public List<Event> getEvents() {
         return new ArrayList<>(eventMap.values());
     }
@@ -159,7 +146,7 @@ public class EventManager implements EventSubject, RegistrationObserver {
     @Override
     public void notifyObservers(List<Event> events) {
         for (EventObserver observer : observers) {
-            observer.update(events);
+            observer.updateEvent(events);
         }
     }
 
@@ -168,7 +155,7 @@ public class EventManager implements EventSubject, RegistrationObserver {
     }
 
     public void addEvent(Event newEvent) {
-        String newId = "E" + (eventMap.size() + 1);
+        String newId = "E" + System.currentTimeMillis();
         newEvent.setEventId(newId);
         eventMap.put(newId, newEvent);
         saveEventsToFile();
@@ -193,7 +180,7 @@ public class EventManager implements EventSubject, RegistrationObserver {
     }
 
     @Override
-    public void update(List<EventRegistration> registrations) {
+    public void updateRegistration(List<EventRegistration> registrations) {
         updateCurrentCapacitiesFromRegistrations(registrations);
     }
 

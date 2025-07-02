@@ -1,16 +1,6 @@
+242,test,testt@sd.com,1231,STUDENT
 U009,Siti Fatimah,siti.fatimah@student.mmu.edu.my,0189988776,STUDENT
 U008,Pravin Raj,pravin.raj@staff.mmu.edu.my,0126677889,STAFF
 U007,Zhi Hao Lim,zhihao.lim@mmu.edu.my,0163344556,STUDENT
 U006,Amanda Wong,amanda.wong@mmu.edu.my,0102233445,STAFF
 U005,Michael Tan,michaeltan@gmail.com,0177788990,STUDENT
-2938019,test,sjaj@ksk.com,484996,STUDENT
-1231,lasttest,yeb@sd.com,213214,STAFF
-tsahahi,saa,21321@sa.com,2131,STAFF
-U004,Nurul Aisyah,nurul.aisyah@mmu.edu.my,0135566778,STAFF
-U003,Ali Hassan,alihassan@mmu.edu.my,0111122233,STUDENT
-jsakk2,sjaj,122@ksa.com,749489,STUDENT
-12345,yahoo solo,solo@gmail.com,1235643,STAFF
-U002,Jane Smith,janesmith@example.com,0198765432,STAFF
-U001,John Doe,johndoe@example.com,0123456789,STUDENT
-U010,Kelvin Lau,kelvin.lau@mmu.edu.my,0145566778,STAFF
-t28391,kjas,jdwj@wd.com,90212394,STUDENT

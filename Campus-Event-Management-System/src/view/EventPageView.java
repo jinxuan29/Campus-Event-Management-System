@@ -164,7 +164,7 @@ public class EventPageView extends PageView implements EventObserver {
     }
 
     @Override
-    public void update(List<Event> events) {
+    public void updateEvent(List<Event> events) {
         updateTable(events);
     }
 }

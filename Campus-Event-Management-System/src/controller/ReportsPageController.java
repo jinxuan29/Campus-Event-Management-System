@@ -20,65 +20,12 @@ public class ReportsPageController {
     }
 
     private void setupListeners() {
-        // No create button listener since create is disabled or removed
-        view.getUpdateButton().addActionListener(e -> updateRegistration());
         view.getDeleteButton().addActionListener(e -> deleteRegistration());
-        view.getRefreshButton().addActionListener(e -> refreshTable());
     }
 
     private void refreshTable() {
         List<EventRegistration> registrations = registrationManager.getRegistrations();
-        view.update(registrations);
-    }
-
-    private void updateRegistration() {
-        String regId = view.getSelectedRegistrationId();
-        if (regId == null) {
-            JOptionPane.showMessageDialog(view, "Please select a registration to update.");
-            return;
-        }
-
-        EventRegistration registration = registrationManager.getRegistrationById(regId);
-        if (registration == null) {
-            JOptionPane.showMessageDialog(view, "Selected registration not found.");
-            return;
-        }
-
-        try {
-            String status = JOptionPane.showInputDialog(view, "Update Status:", registration.getStatus());
-            if (status == null || status.trim().isEmpty())
-                return;
-
-            String paymentStr = JOptionPane.showInputDialog(view, "Update Payment Amount:",
-                    registration.getPaymentAmount());
-            if (paymentStr == null || paymentStr.trim().isEmpty())
-                return;
-
-            double paymentAmount = Double.parseDouble(paymentStr);
-
-            // Build updated registration (assuming immutability)
-            EventRegistration updated = new EventRegistration.EventRegistrationBuilder()
-                    .registrationId(registration.getRegistrationId())
-                    .userId(registration.getUserId())
-                    .eventId(registration.getEventId())
-                    .registrationDate(registration.getRegistrationDate())
-                    .status(status.trim())
-                    .paymentAmount(paymentAmount)
-                    .build();
-
-            // Replace old registration in map
-            registrationManager.getRegistrations().remove(registration);
-            registrationManager.getRegistrations().add(updated);
-
-            // Save all to file (overwrite)
-            registrationManager.saveAllRegistrationsToFile();
-
-            JOptionPane.showMessageDialog(view, "Registration updated successfully!");
-            refreshTable();
-
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(view, "Error updating registration: " + ex.getMessage());
-        }
+        view.updateRegistration(registrations);
     }
 
     private void deleteRegistration() {
@@ -94,14 +41,9 @@ public class ReportsPageController {
             return;
         }
 
-        boolean removed = registrationManager.getRegistrations().removeIf(reg -> reg.getRegistrationId().equals(regId));
-        if (removed) {
-            registrationManager.saveAllRegistrationsToFile();
+        registrationManager.removeRegistration(regId);
+        JOptionPane.showMessageDialog(view, "Registration deleted successfully!");
+        refreshTable();
 
-            JOptionPane.showMessageDialog(view, "Registration deleted successfully!");
-            refreshTable();
-        } else {
-            JOptionPane.showMessageDialog(view, "Failed to delete registration.");
-        }
     }
 }

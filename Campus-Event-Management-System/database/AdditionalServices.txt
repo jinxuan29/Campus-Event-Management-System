@@ -1,4 +1,0 @@
-service_id, service_name, service_fee
-//S1,Catering,15.00
-//S2,Transportation,20.00
-//S3,Materials,10.00

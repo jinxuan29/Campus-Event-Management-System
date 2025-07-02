@@ -170,6 +170,31 @@ public class RegistrationManager implements RegistrationSubject {
         }
     }
 
+    public void removeRegistrationsByUserId(String userId) {
+        boolean changed = false;
+        Iterator<Map.Entry<String, EventRegistration>> iterator = registrations.entrySet().iterator();
+
+        while (iterator.hasNext()) {
+            Map.Entry<String, EventRegistration> entry = iterator.next();
+            if (entry.getValue().getUserId().equals(userId)) {
+                iterator.remove();
+                changed = true;
+            }
+        }
+
+        if (changed) {
+            saveAllRegistrationsToFile();
+            registrationUpdated();
+        }
+    }
+
+    public void removeRegistration(String registrationId) {
+        if (registrations.remove(registrationId) != null) {
+            saveAllRegistrationsToFile();
+            registrationUpdated();
+        }
+    }
+
     public boolean isUserRegisteredForEvent(String userId, String eventId) {
         return registrations.values().stream()
                 .anyMatch(r -> r.getUserId().equals(userId) && r.getEventId().equals(eventId));
@@ -201,7 +226,7 @@ public class RegistrationManager implements RegistrationSubject {
     @Override
     public void notifyObservers(List<EventRegistration> registrations) {
         for (RegistrationObserver observer : observers) {
-            observer.update(registrations);
+            observer.updateRegistration(registrations);
         }
     }
 }

@@ -3,12 +3,14 @@ package view;
 import controller.EventPageController;
 import controller.RegistrationPageController;
 import controller.ReportsPageController;
+import controller.UserPageController;
 import java.awt.CardLayout;
 import java.awt.Component;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import model.manager.EventManager;
 import model.manager.RegistrationManager;
+import model.manager.UserManager;
 
 public class CampusEventManagementSystemFrame extends JFrame {
     private JPanel cardPanel;
@@ -51,17 +53,28 @@ public class CampusEventManagementSystemFrame extends JFrame {
         ReportsPageController reportsPageController = new ReportsPageController(reportView);
         registerPage("REPORTS", reportView.getMainPanel());
 
+        // USER page
+        UserPageView userView = new UserPageView();
+        UserPageController userPageController = new UserPageController(userView);
+        registerPage("USERS", userView.getMainPanel());
+
         // Observers
         EventManager eventManager = EventManager.getInstance();
         eventManager.registerObserver(eventPageView);
         eventManager.registerObserver(registrationView);
+        eventManager.registerObserver(reportView);
 
         RegistrationManager registrationManager = RegistrationManager.getInstance();
         registrationManager.registerObserver(eventManager);
         registrationManager.registerObserver(reportView);
 
+        UserManager userManager = UserManager.getInstance();
+        userManager.registerObserver(userView);
+        userManager.registerObserver(reportView);
+
         eventManager.eventsUpdated();
         registrationManager.registrationUpdated();
+        userManager.usersUpdated();
     }
 
     public void registerPage(String name, JPanel panel) {

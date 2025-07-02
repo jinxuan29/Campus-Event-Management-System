@@ -2,8 +2,9 @@ E5,Cybersecurity Conference,Room 305,Seminar,2025-07-22,0,100,15
 E7,Multicultural Night,Outdoor Stage,Seminar,2025-09-20,0,500,8
 E8,Basketball Finals,Court 1,sport,2025-07-28,0,20,0
 E9,Cloud Computing Trends,Room 101,Seminar,2025-08-10,0,12,10
-E10,test,test,Seminar,2026-02-16,0,3,0
+E10,asda,sad,Seminar,2026-12-02,0,23,12
+E1751419008300,dog,sad,sport,2027-02-23,0,2434,123
 E1,AI Innovations 2025,Auditorium A,Seminar,2025-07-10,0,1500,20
 E2,Java Coding Bootcamp,Lab B,Seminar,2025-08-05,0,40,0
-E3,Cultural Fiesta,Main Hall,Seminar,2025-09-01,1,400,5
-E4,Interfaculty Football Match,Sports Field,Seminar,2025-08-15,1,220,0
+E3,Cultural Fiesta,Main Hall,Seminar,2025-09-01,0,400,5
+E4,Football matches,Sports Field,sport,2025-08-15,1,220,0
