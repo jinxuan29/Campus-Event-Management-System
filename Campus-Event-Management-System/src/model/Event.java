@@ -1,5 +1,6 @@
 package model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Event {
@@ -93,7 +94,7 @@ public class Event {
                 "Event ID: %s\nName: %s\nDate: %s\nVenue: %s\nType: %s\nCapacity: %d/%d\nFee: RM%d",
                 eventId,
                 eventName,
-                eventDate.toString(),
+                new SimpleDateFormat("yyyy-MM-dd").format(eventDate),
                 eventVenue,
                 eventType,
                 currentCapacity,

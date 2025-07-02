@@ -82,7 +82,7 @@ public class EventPageView extends PageView implements EventObserver {
             tableModel.addRow(new Object[] {
                     e.getEventId(),
                     e.getEventName(),
-                    new SimpleDateFormat("yyyy-MM-dd").format(e.getEventDate()),
+                    new SimpleDateFormat("yyyy-MM-dd").format(e.getEventDate()).toString(),
                     e.getEventVenue(),
                     e.getEventType(),
                     e.getCurrentCapacity(),
