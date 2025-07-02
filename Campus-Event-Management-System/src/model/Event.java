@@ -107,14 +107,14 @@ public class Event {
     }
 
     public static class EventBuilder<T extends EventBuilder<T>> {
-        protected String eventId;
-        protected String eventName;
-        protected Date eventDate;
-        protected String eventVenue;
-        protected String eventType;
-        protected int currentCapacity = 0;
-        protected int eventCapacity;
-        protected int registrationFee;
+        private String eventId;
+        private String eventName;
+        private Date eventDate;
+        private String eventVenue;
+        private String eventType;
+        private int currentCapacity = 0;
+        private int eventCapacity;
+        private int registrationFee;
 
         public EventBuilder() {
         }

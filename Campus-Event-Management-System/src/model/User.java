@@ -66,11 +66,11 @@ public class User {
     // Generic Builder class for extensibility
     public static class Builder<T extends Builder<T>> {
 
-        protected String userId;
-        protected String name;
-        protected String email;
-        protected String phone;
-        protected String role;
+        private String userId;
+        private String name;
+        private String email;
+        private String phone;
+        private String role;
 
         protected T self() {
             return (T) this;

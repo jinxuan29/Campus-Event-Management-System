@@ -13,11 +13,6 @@ public class Workshop extends Event {
         }
 
         @Override
-        public WorkshopBuilder eventType(String type) {
-            throw new UnsupportedOperationException("Workshop type is fixed to 'Workshop'");
-        }
-
-        @Override
         protected WorkshopBuilder self() {
             return this;
         }

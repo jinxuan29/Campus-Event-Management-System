@@ -1,10 +1,10 @@
 package model;
 
 public class Service {
-    protected String serviceId;
-    protected String serviceName;
-    protected double serviceFee;
-    protected String serviceType;
+    private String serviceId;
+    private String serviceName;
+    private double serviceFee;
+    private String serviceType;
 
     protected Service(ServiceBuilder<?> builder) {
         this.serviceId = builder.serviceId;
@@ -14,10 +14,10 @@ public class Service {
     }
 
     public static class ServiceBuilder<T extends ServiceBuilder<T>> {
-        protected String serviceId;
-        protected String serviceName;
-        protected double serviceFee;
-        protected String serviceType;
+        private String serviceId;
+        private String serviceName;
+        private double serviceFee;
+        private String serviceType;
 
         protected T self() {
             return (T) this;

@@ -1,4 +1,5 @@
 242,test,testt@sd.com,1231,STUDENT
+test2,hello,23@sd.com,12312,STUDENT
 U009,Siti Fatimah,siti.fatimah@student.mmu.edu.my,0189988776,STUDENT
 U008,Pravin Raj,pravin.raj@staff.mmu.edu.my,0126677889,STAFF
 U007,Zhi Hao Lim,zhihao.lim@mmu.edu.my,0163344556,STUDENT

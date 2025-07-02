@@ -13,11 +13,6 @@ public class SportEvent extends Event {
         }
 
         @Override
-        public SportEventBuilder eventType(String type) {
-            throw new UnsupportedOperationException("Sport event type is fixed to 'Sport'");
-        }
-
-        @Override
         protected SportEventBuilder self() {
             return this;
         }
