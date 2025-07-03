@@ -164,6 +164,8 @@ public class EventManager implements EventSubject, RegistrationObserver {
 
     public void removeEvent(String eventId) {
         if (eventMap.remove(eventId) != null) {
+            RegistrationManager.getInstance().removeRegistrationsByEventId(eventId); // remove the registration that has
+                                                                                     // event id init
             saveEventsToFile();
             eventsUpdated();
         }
